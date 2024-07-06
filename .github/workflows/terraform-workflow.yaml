@@ -48,9 +48,9 @@ jobs:
     - name: Terraform Plan
       run: terraform plan -out=tfplan 
 
-    - name: Terraform apply
-      run: terraform apply -auto-approve  
+    #- name: Terraform apply
+    #  run: terraform apply -auto-approve  
 
     # Uncomment this and use if you want to destroy the infrastructure.
-    #- name: Terraform destroy
-    # run: terraform destroy -auto-approve 
+    - name: Terraform destroy
+      run: terraform destroy -auto-approve 

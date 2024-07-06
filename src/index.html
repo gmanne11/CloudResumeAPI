@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gopi Vivek Manne - Resume</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        #resume {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            border-radius: 8px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+            margin-top: 0;
+            text-align: center;
+        }
+        h2 {
+            color: #2980b9;
+            border-bottom: 1px solid #bdc3c7;
+            padding-bottom: 5px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        h3 {
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .error {
+            color: #e74c3c;
+            font-weight: bold;
+            background-color: #fadbd8;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        #label {
+            font-size: 1.1em;
+            color: #7f8c8d;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        #contact, #location {
+            color: #34495e;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .work-item, .education-item, .skills-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #ecf0f1;
+            border-radius: 4px;
+        }
+        .work-item h3, .education-item h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .work-date, .education-date {
+            font-style: italic;
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        .work-summary {
+            margin-top: 5px;
+            padding-left: 20px;
+        }
+        .work-summary li {
+            margin-bottom: 5px;
+        }
+        .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .skill-tag {
+            background-color: #3498db;
+            color: #fff;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+    </style>
+</head>
+<body>
+    <div id="resume">
+        <h1 id="name"></h1>
+        <p id="label"></p>
+        <p id="contact"></p>
+        <p id="location"></p>
+
+        <div class="section">
+            <h2>Profiles</h2>
+            <div id="profiles"></div>
+        </div>
+
+        <div class="section">
+            <h2>Work Experience</h2>
+            <div id="work"></div>
+        </div>
+
+        <div class="section">
+            <h2>Education</h2>
+            <div id="education"></div>
+        </div>
+
+        <div class="section">
+            <h2>Skills</h2>
+            <div id="skills"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_GATEWAY_URL = 'https://l2zn3gtn15.execute-api.us-east-1.amazonaws.com/prod/resume';
+
+        async function fetchResume() {
+            try {
+                const response = await fetch(API_GATEWAY_URL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                displayResume(data);
+            } catch (error) {
+                console.error('Error fetching resume:', error);
+                document.getElementById('resume').innerHTML = `<p class="error">Error loading resume data: ${error.message}</p>`;
+            }
+        }
+
+        function displayResume(data) {
+            document.getElementById('name').textContent = data.name;
+            document.getElementById('label').textContent = data.label;
+            document.getElementById('contact').textContent = `${data.email} | ${data.phone}`;
+            document.getElementById('location').textContent = `${data.location.city}, ${data.location.region}, ${data.location.countryCode}`;
+
+            // Profiles
+            const profilesHtml = data.profiles.map(p => `<p><a href="${p.url}" target="_blank">${p.network}</a></p>`).join('');
+            document.getElementById('profiles').innerHTML = profilesHtml;
+
+            // Work Experience
+            const workHtml = data.work.map(w => `
+                <div class="work-item">
+                    <h3>${w.position} at ${w.name}</h3>
+                    <p class="work-date">${w.startDate} - ${w.endDate}</p>
+                    <ul class="work-summary">
+                        ${w.summary.split('. ').map(point => `<li>${point}</li>`).join('')}
+                    </ul>
+                </div>
+            `).join('');
+            document.getElementById('work').innerHTML = workHtml;
+
+            // Education
+            const educationHtml = data.education.map(e => `
+                <div class="education-item">
+                    <h3>${e.studyType} in ${e.area}</h3>
+                    <p>${e.institution}</p>
+                    <p class="education-date">${e.startDate} - ${e.endDate}</p>
+                </div>
+            `).join('');
+            document.getElementById('education').innerHTML = educationHtml;
+
+            // Skills
+            const skillsHtml = data.skills.map(s => `
+                <div class="skills-item">
+                    <h3>${s.name}</h3>
+                    <div class="skills-list">
+                        ${s.keywords.map(k => `<span class="skill-tag">${k}</span>`).join('')}
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('skills').innerHTML = skillsHtml;
+        }
+
+        fetchResume();
+    </script>
+</body>
+</html>

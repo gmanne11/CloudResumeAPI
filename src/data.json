@@ -1,0 +1,48 @@
+{
+  "id": {"S": "1"},
+  "name": {"S": "Gopi Vivek Manne"},
+  "location": {"S": "Oakville, Ontario"},
+  "contact": {"M": {
+    "email": {"S": "gopim4959@gmail.com"},
+    "phone": {"S": "+1 (647) 568-3491"},
+    "linkedin": {"S": "linkedin.com/Gopivivekmanne"}
+  }},
+  "profile": {"S": "Highly skilled and experienced DevOps and Cloud Engineer with almost 5 years of hands-on experience..."},
+  "work_experience": {"L": [
+    {
+      "M": {
+        "title": {"S": "DevOps Engineer"},
+        "company": {"S": "Avaaz"},
+        "location": {"S": "Toronto, Canada"},
+        "duration": {"S": "Aug 2022 - Present"},
+        "responsibilities": {"L": [
+          {"S": "Set up, maintained, auto-scaled, and monitored AWS cloud platforms..."},
+          {"S": "Successfully orchestrated the migration of dockerized microservices..."}
+        ]}
+      }
+    },
+    {
+      "M": {
+        "title": {"S": "DevOps Cloud Engineer"},
+        "company": {"S": "Capgemini"},
+        "location": {"S": "Toronto, Canada"},
+        "duration": {"S": "May 2019 - July 2022"},
+        "responsibilities": {"L": [
+          {"S": "Managed AWS cloud infrastructure..."},
+          {"S": "Utilized Terraform for infrastructure provisioning..."}
+        ]}
+      }
+    }
+  ]},
+  "education": {"M": {
+    "degree": {"S": "Bachelor of Technology (B. Tech.)"},
+    "institution": {"S": "Acharya Nagarjuna University, AP (India)"},
+    "year": {"S": "April 2013 - Feb 2017"}
+  }},
+  "skills": {"L": [
+    {"S": "DevOps"}, {"S": "Docker"}, {"S": "Docker Compose"}, {"S": "Kubernetes"}
+  ]},
+  "certifications": {"L": [
+    {"S": "AWS Certified DevOps Engineer Professional"}
+  ]}
+}
